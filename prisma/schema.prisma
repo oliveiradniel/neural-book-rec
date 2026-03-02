@@ -7,3 +7,60 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name String @unique
+  age  Int
+
+  @@map("users")
+}
+
+model Author {
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name String @unique
+
+  books Book[]
+
+  @@map("authors")
+}
+
+model LiteraryGenre {
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name Genre
+
+  @@map("literary_genres")
+}
+
+model Book {
+  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  authorId String @map("author_id") @db.Uuid
+  title    String
+
+  author Author @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("books")
+}
+
+enum Genre {
+  FANTASY
+  SCIENCE_FICTION
+  ROMANCE
+  HORROR
+  THRILLER
+  MYSTERY
+  ADVENTURE
+  DRAMA
+  HISTORICAL_FICTION
+  DYSTOPIA
+  BIOGRAPHY
+  AUTOBIOGRAPHY
+  HISTORY
+  PHILOSOPHY
+  SELF_HELP
+  BUSINESS
+  SCIENCE
+  TECHNOLOGY
+  POETRY
+  CHILDREN
+}
