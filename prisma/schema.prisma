@@ -13,6 +13,8 @@ model User {
   name String @unique
   age  Int
 
+  readings Reading[]
+
   @@map("users")
 }
 
@@ -29,6 +31,8 @@ model LiteraryGenre {
   id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name Genre
 
+  books BookLiteraryGenre[]
+
   @@map("literary_genres")
 }
 
@@ -37,9 +41,42 @@ model Book {
   authorId String @map("author_id") @db.Uuid
   title    String
 
-  author Author @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  author Author @relation(fields: [authorId], references: [id])
+
+  genres   BookLiteraryGenre[]
+  readings Reading[]
 
   @@map("books")
+}
+
+model BookLiteraryGenre {
+  bookId          String @map("book_id") @db.Uuid
+  literaryGenreId String @map("literary_genre_id") @db.Uuid
+
+  book          Book          @relation(fields: [bookId], references: [id])
+  literaryGenre LiteraryGenre @relation(fields: [literaryGenreId], references: [id])
+
+  @@id([bookId, literaryGenreId])
+  @@map("book_literary_genres")
+}
+
+model Reading {
+  id     String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String     @map("user_id") @db.Uuid
+  bookId String     @map("book_id") @db.Uuid
+  rating Int
+  status BookStatus
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
+
+  @@unique([userId, bookId])
+  @@map("readings")
+}
+
+enum BookStatus {
+  READ
+  WANT_TO_READ
 }
 
 enum Genre {
