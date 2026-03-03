@@ -5,7 +5,7 @@ type Reading = {
   title: string;
   author: string;
   literaryGenres: Genre[];
-  rating: number;
+  rating?: number | null;
   status: ReadingStatus;
 };
 

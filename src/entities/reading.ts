@@ -7,6 +7,6 @@ export type Reading = {
   id: string;
   userId: string;
   bookId: string;
-  rating: number;
+  rating?: number | null;
   status: ReadingStatus;
 };

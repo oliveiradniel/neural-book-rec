@@ -63,7 +63,7 @@ model Reading {
   id     String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   userId String        @map("user_id") @db.Uuid
   bookId String        @map("book_id") @db.Uuid
-  rating Int
+  rating Int?
   status ReadingStatus
 
   user User @relation(fields: [userId], references: [id])
