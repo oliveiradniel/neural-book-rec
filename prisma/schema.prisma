@@ -69,7 +69,6 @@ model Reading {
   user User @relation(fields: [userId], references: [id])
   book Book @relation(fields: [bookId], references: [id])
 
-  @@unique([userId, bookId])
   @@map("readings")
 }
 
