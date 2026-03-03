@@ -61,11 +61,11 @@ model BookLiteraryGenre {
 }
 
 model Reading {
-  id     String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId String     @map("user_id") @db.Uuid
-  bookId String     @map("book_id") @db.Uuid
+  id     String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId String        @map("user_id") @db.Uuid
+  bookId String        @map("book_id") @db.Uuid
   rating Int
-  status BookStatus
+  status ReadingStatus
 
   user User @relation(fields: [userId], references: [id])
   book Book @relation(fields: [bookId], references: [id])
@@ -74,7 +74,7 @@ model Reading {
   @@map("readings")
 }
 
-enum BookStatus {
+enum ReadingStatus {
   READ
   WANT_TO_READ
 }
