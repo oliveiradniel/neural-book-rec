@@ -3,7 +3,7 @@ import { ReadingStatus as DomainReadingStatus } from 'src/entities/reading';
 import {
   Genre as PrismaGenre,
   ReadingStatus as PrismaReadingStatus,
-} from 'generated/prisma/enums';
+} from '@prisma/client';
 
 import type { UserWithReadings } from '../types/user-with-readings';
 import type { PrismaUserWithReadings } from '../types/prisma-user-with-readings';

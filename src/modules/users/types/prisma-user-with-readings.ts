@@ -1,4 +1,4 @@
-import { Prisma } from 'generated/prisma/browser';
+import { Prisma } from '@prisma/client';
 
 export type PrismaUserWithReadings = Prisma.UserGetPayload<{
   select: {
