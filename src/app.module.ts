@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { EnvModule } from './config/env/env.module';
 import { DatabaseModule } from './infra/database/database.module';
+import { UsersModule } from './modules/users/users.module';
 
 import { envValidate } from './config/env/env.validate';
 
@@ -17,6 +18,7 @@ import { EnvironmentVariablesDTO } from './config/env/env.dto';
     }),
     EnvModule,
     DatabaseModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
