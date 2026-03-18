@@ -34,7 +34,9 @@
       "always",
       [
         "books",
+        "authors",
         "readings",
+        "literary-genres",
         "config",
         "database",
         "dto",
