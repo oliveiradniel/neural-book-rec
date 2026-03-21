@@ -1,13 +1,4 @@
-import { Genre } from 'src/entities/literary-genre';
-import { ReadingStatus } from 'src/entities/reading';
-
-type Reading = {
-  title: string;
-  author: string;
-  literaryGenres: Genre[];
-  rating?: number | null;
-  status: ReadingStatus;
-};
+import { ReadingWithAuthorAndGenres } from './reading-with-author-and-genres';
 
 export type UserWithReadings = {
   id: string;
@@ -17,5 +8,5 @@ export type UserWithReadings = {
     read: number;
     wantToRead: number;
   };
-  readings: Reading[];
+  readings: ReadingWithAuthorAndGenres[];
 };

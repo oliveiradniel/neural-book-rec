@@ -6,10 +6,52 @@ import { PrismaService } from 'src/infra/database/prisma.service';
 
 import type { UsersRepository } from './contracts/users-repository.contract';
 import type { UserWithReadings } from './types/user-with-readings';
+import { User } from 'src/entities/user';
+import { ReaderProfile } from './types/reader-profile';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  getAll(): Promise<User[]> {
+    return this.prismaService.user.findMany();
+  }
+
+  async getReaders(): Promise<ReaderProfile[]> {
+    const users = await this.prismaService.user.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+      select: {
+        age: true,
+        readings: {
+          select: {
+            rating: true,
+            book: {
+              select: {
+                id: true,
+                authorId: true,
+                genres: {
+                  select: {
+                    literaryGenreId: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      where: {
+        readings: {
+          some: {
+            status: 'READ',
+          },
+        },
+      },
+    });
+
+    return UserMapper.toDomainReaderProfileList(users);
+  }
 
   async getAllWithReadings(): Promise<UserWithReadings[]> {
     const users = await this.prismaService.user.findMany({
@@ -30,11 +72,13 @@ export class PrismaUsersRepository implements UsersRepository {
             id: true,
             book: {
               select: {
+                id: true,
                 title: true,
                 genres: {
                   select: {
                     literaryGenre: {
                       select: {
+                        id: true,
                         name: true,
                       },
                     },
