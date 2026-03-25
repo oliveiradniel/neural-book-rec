@@ -37,6 +37,7 @@ export class UserMapper {
       const status = UserMapper.toDomainReadingStatus(reading.status);
 
       return {
+        id: reading.id,
         book: {
           id: reading.book.id,
           title: reading.book.title,

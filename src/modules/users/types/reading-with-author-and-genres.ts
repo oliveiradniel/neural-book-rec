@@ -2,6 +2,7 @@ import { Genre } from 'src/entities/literary-genre';
 import { ReadingStatus } from 'src/entities/reading';
 
 export type ReadingWithAuthorAndGenres = {
+  id: string;
   book: {
     id: string;
     title: string;

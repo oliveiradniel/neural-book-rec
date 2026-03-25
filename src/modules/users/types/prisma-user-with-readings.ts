@@ -15,11 +15,13 @@ export type PrismaUserWithReadings = Prisma.UserGetPayload<{
         id: true;
         book: {
           select: {
+            id: true;
             title: true;
             genres: {
               select: {
                 literaryGenre: {
                   select: {
+                    id: true;
                     name: true;
                   };
                 };
