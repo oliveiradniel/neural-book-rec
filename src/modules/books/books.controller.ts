@@ -7,9 +7,9 @@ import { ReadingIdParamDTO } from './dtos/reading-id.param.dto';
 import { UserIdParamDTO } from '../users/dtos/user-id.param.dto';
 import { UpdateReadingDataDTO } from './dtos/update-reading-data.dto';
 
-import type { Book } from 'src/entities/book';
 import type { Reading } from 'src/entities/reading';
 import type { BookWithAuthorAndGenre } from './types/book-with-author-and-genre';
+import type { UnreadBooks } from './types/unread-books';
 
 @Controller('books')
 export class BooksController {
@@ -24,7 +24,9 @@ export class BooksController {
   }
 
   @Get('unread/:userId')
-  findUnreadBooksByUserId(@Param() param: UserIdParamDTO): Promise<Book[]> {
+  findUnreadBooksByUserId(
+    @Param() param: UserIdParamDTO,
+  ): Promise<UnreadBooks[]> {
     return this.booksService.listUnreadBooksByUserId(param.userId);
   }
 

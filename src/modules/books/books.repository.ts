@@ -8,6 +8,7 @@ import type { BooksRepository } from './contracts/books-repository';
 import type { BookWithAuthorAndGenre } from './types/book-with-author-and-genre';
 import type { Book } from 'src/entities/book';
 import type { BookSummary } from './types/book-summary';
+import type { UnreadBooks } from './types/unread-books';
 
 @Injectable()
 export class PrismaBooksRepository implements BooksRepository {
@@ -34,14 +35,37 @@ export class PrismaBooksRepository implements BooksRepository {
     return BookMapper.toDomainBookSummaryList(books);
   }
 
-  getUnreadBooksByUserId(userId: string): Promise<Book[]> {
-    return this.prismaService.book.findMany({
+  async getUnreadBooksByUserId(userId: string): Promise<UnreadBooks[]> {
+    const books = await this.prismaService.book.findMany({
       where: {
         readings: {
           none: { userId, status: 'READ' },
         },
       },
+      select: {
+        id: true,
+        title: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        genres: {
+          select: {
+            literaryGenreId: true,
+            literaryGenre: true,
+          },
+        },
+        _count: {
+          select: {
+            readings: true,
+          },
+        },
+      },
     });
+
+    return BookMapper.toDomainUnreadBookList(books);
   }
 
   async getAllWithAuthorAndGenres(): Promise<BookWithAuthorAndGenre[]> {
