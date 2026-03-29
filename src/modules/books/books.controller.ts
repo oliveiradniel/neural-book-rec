@@ -1,11 +1,15 @@
 import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
 
 import { BooksService } from './books.service';
-
-import type { BookWithAuthorAndGenre } from './types/book-with-author-and-genre';
-import { ReadingIdParamDTO } from './dtos/reading-id.param.dto';
 import { ReadingsService } from '../readings/readings.service';
+
+import { ReadingIdParamDTO } from './dtos/reading-id.param.dto';
+import { UserIdParamDTO } from '../users/dtos/user-id.param.dto';
 import { UpdateReadingDataDTO } from './dtos/update-reading-data.dto';
+
+import type { Book } from 'src/entities/book';
+import type { Reading } from 'src/entities/reading';
+import type { BookWithAuthorAndGenre } from './types/book-with-author-and-genre';
 
 @Controller('books')
 export class BooksController {
@@ -19,11 +23,16 @@ export class BooksController {
     return this.booksService.listAllWithAuthorAndGenres();
   }
 
+  @Get('unread/:userId')
+  findUnreadBooksByUserId(@Param() param: UserIdParamDTO): Promise<Book[]> {
+    return this.booksService.listUnreadBooksByUserId(param.userId);
+  }
+
   @Patch('readings/:readingId')
   updateReading(
     @Param() param: ReadingIdParamDTO,
     @Body() data: UpdateReadingDataDTO,
-  ) {
+  ): Promise<Reading> {
     return this.readingsService.update({
       id: param.readingId,
       ...data,

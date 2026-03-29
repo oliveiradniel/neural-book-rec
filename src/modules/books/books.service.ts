@@ -18,6 +18,10 @@ export class BooksService {
     return this.booksRepository.getBookSummary();
   }
 
+  listUnreadBooksByUserId(userId: string): Promise<Book[]> {
+    return this.booksRepository.getUnreadBooksByUserId(userId);
+  }
+
   listAllWithAuthorAndGenres(): Promise<BookWithAuthorAndGenre[]> {
     return this.booksRepository.getAllWithAuthorAndGenres();
   }

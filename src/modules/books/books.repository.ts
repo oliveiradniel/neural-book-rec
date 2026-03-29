@@ -34,6 +34,16 @@ export class PrismaBooksRepository implements BooksRepository {
     return BookMapper.toDomainBookSummaryList(books);
   }
 
+  getUnreadBooksByUserId(userId: string): Promise<Book[]> {
+    return this.prismaService.book.findMany({
+      where: {
+        readings: {
+          none: { userId, status: 'READ' },
+        },
+      },
+    });
+  }
+
   async getAllWithAuthorAndGenres(): Promise<BookWithAuthorAndGenre[]> {
     const books = await this.prismaService.book.findMany({
       orderBy: {
