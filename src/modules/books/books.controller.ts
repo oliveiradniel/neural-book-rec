@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 
 import { BooksService } from './books.service';
 import { ReadingsService } from '../readings/readings.service';
@@ -6,10 +6,13 @@ import { ReadingsService } from '../readings/readings.service';
 import { ReadingIdParamDTO } from './dtos/reading-id.param.dto';
 import { UserIdParamDTO } from '../users/dtos/user-id.param.dto';
 import { UpdateReadingDataDTO } from './dtos/update-reading-data.dto';
+import { CreateReadingParamDTO } from './dtos/create-reading.param.dto';
+import { CreateReadingDataDTO } from './dtos/create-reading-data.dto';
 
 import type { Reading } from 'src/entities/reading';
 import type { BookWithAuthorAndGenre } from './types/book-with-author-and-genre';
-import type { UnreadBooks } from './types/unread-books';
+import type { UnreadBook } from './types/unread-book';
+import type { ReadingDetails } from '../readings/types/reading-details';
 
 @Controller('books')
 export class BooksController {
@@ -26,8 +29,21 @@ export class BooksController {
   @Get('unread/:userId')
   findUnreadBooksByUserId(
     @Param() param: UserIdParamDTO,
-  ): Promise<UnreadBooks[]> {
+  ): Promise<UnreadBook[]> {
     return this.booksService.listUnreadBooksByUserId(param.userId);
+  }
+
+  @Post(':bookId/readings')
+  createReading(
+    @Param() param: CreateReadingParamDTO,
+    @Body() body: CreateReadingDataDTO,
+  ): Promise<ReadingDetails> {
+    return this.readingsService.create({
+      userId: body.userId,
+      bookId: param.bookId,
+      status: body.status,
+      rating: body.rating,
+    });
   }
 
   @Patch('readings/:readingId')
@@ -37,7 +53,8 @@ export class BooksController {
   ): Promise<Reading> {
     return this.readingsService.update({
       id: param.readingId,
-      ...data,
+      status: data.status,
+      rating: data.rating,
     });
   }
 }

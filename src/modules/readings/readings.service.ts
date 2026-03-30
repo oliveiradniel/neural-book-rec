@@ -4,14 +4,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { UsersService } from '../users/users.service';
+
 import { PrismaReadingsRepository } from './readings.repository';
 
 import { ReadingStatus, type Reading } from 'src/entities/reading';
 import type { UpdateReadingData } from './types/update-reading-data.type';
+import type { CreateReadingData } from './types/create-reading-data.type';
+import type { ReadingDetails } from './types/reading-details';
 
 @Injectable()
 export class ReadingsService {
-  constructor(private readonly readingsRepository: PrismaReadingsRepository) {}
+  constructor(
+    private readonly readingsRepository: PrismaReadingsRepository,
+    private readonly usersService: UsersService,
+  ) {}
 
   async findById({
     id,
@@ -27,6 +34,20 @@ export class ReadingsService {
     }
 
     return reading;
+  }
+
+  async create(data: CreateReadingData): Promise<ReadingDetails> {
+    const user = await this.usersService.findById(data.userId);
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return this.readingsRepository.create({
+      userId: data.userId,
+      bookId: data.bookId,
+      status: data.status,
+      rating: data.rating,
+    });
   }
 
   async update(data: UpdateReadingData): Promise<Reading> {
