@@ -8,6 +8,7 @@ import { PrismaUsersRepository } from 'src/modules/users/users.repository';
 import { PrismaBooksRepository } from 'src/modules/books/books.repository';
 import { PrismaAuthorsRepository } from 'src/modules/authors/authors.repository';
 import { PrismaLiteraryGenresRepository } from 'src/modules/literaryGenres/literary-genres.repository';
+import { PrismaReadingsRepository } from 'src/modules/readings/readings.repository';
 
 @Global()
 @Module({
@@ -18,6 +19,7 @@ import { PrismaLiteraryGenresRepository } from 'src/modules/literaryGenres/liter
     PrismaBooksRepository,
     PrismaAuthorsRepository,
     PrismaLiteraryGenresRepository,
+    PrismaReadingsRepository,
   ],
   exports: [
     PrismaService,
@@ -25,6 +27,7 @@ import { PrismaLiteraryGenresRepository } from 'src/modules/literaryGenres/liter
     PrismaBooksRepository,
     PrismaAuthorsRepository,
     PrismaLiteraryGenresRepository,
+    PrismaReadingsRepository,
   ],
 })
 export class DatabaseModule {}

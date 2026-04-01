@@ -5,6 +5,7 @@ import { EnvModule } from './config/env/env.module';
 import { DatabaseModule } from './infra/database/database.module';
 import { UsersModule } from './modules/users/users.module';
 import { BooksModule } from './modules/books/books.module';
+import { AIModule } from './modules/ai/ai.module';
 
 import { envValidate } from './config/env/env.validate';
 
@@ -21,6 +22,7 @@ import { EnvironmentVariablesDTO } from './config/env/env.dto';
     DatabaseModule,
     UsersModule,
     BooksModule,
+    AIModule,
   ],
   controllers: [],
   providers: [],
