@@ -54,7 +54,9 @@ export class FeatureEngineeringService {
   }
 
   embedUser({ user, context }: EmbedUserProps): tf.Tensor1D {
-    const completedReadings = user.readings.filter((r) => r.rating > 0);
+    const completedReadings = user.readings.filter(
+      (reading) => reading.rating > 0,
+    );
     const isReader = completedReadings.length > 0;
 
     if (isReader) {
@@ -75,9 +77,16 @@ export class FeatureEngineeringService {
       );
 
       const weightedSum = stacked.mul(weights.reshape([-1, 1])).sum(0);
+
       const weightSumAbs = weights.abs().sum();
 
-      return weightedSum.div(weightSumAbs).reshape([1, context.dimensions]);
+      const safeWeightSum = tf.where(
+        weightSumAbs.equal(tf.scalar(0)),
+        tf.ones([1]),
+        weightSumAbs,
+      );
+
+      return weightedSum.div(safeWeightSum).reshape([1, context.dimensions]);
     }
 
     return tf
