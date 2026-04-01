@@ -44,7 +44,8 @@
         "env",
         "infra",
         "tooling",
-        "users"
+        "users",
+        "ai"
       ]
     ],
     "subject-case": [
