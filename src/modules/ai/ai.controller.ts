@@ -17,13 +17,13 @@ import type { RecommendedReading } from './types/recommended-reading.type';
 export class AIController {
   constructor(private readonly recommenderService: RecommenderService) {}
 
-  @Get('train')
+  @Post('train')
+  @HttpCode(HttpStatus.OK)
   train(): Promise<void> {
     return this.recommenderService.train();
   }
 
-  @HttpCode(HttpStatus.OK)
-  @Post('recommend/:userId')
+  @Get('recommendations/:userId')
   recommend(@Param() param: UserIdParamDTO): Promise<RecommendedReading[]> {
     return this.recommenderService.predict(param.userId);
   }
