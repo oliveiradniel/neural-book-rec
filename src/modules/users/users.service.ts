@@ -15,6 +15,16 @@ export class UsersService {
     return this.usersRepository.getById(id);
   }
 
+  async findReaderProfile(id: string): Promise<ReaderProfile> {
+    const user = await this.usersRepository.getReaderProfile(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
+  }
+
   listAll(): Promise<User[]> {
     return this.usersRepository.getAll();
   }

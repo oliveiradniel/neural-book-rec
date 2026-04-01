@@ -164,4 +164,35 @@ export class PrismaUsersRepository implements UsersRepository {
 
     return UserMapper.toDomainList(users);
   }
+
+  async getReaderProfile(id: string): Promise<ReaderProfile | null> {
+    const readerProfile = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        age: true,
+        readings: {
+          select: {
+            rating: true,
+            book: {
+              select: {
+                id: true,
+                authorId: true,
+                genres: {
+                  select: {
+                    literaryGenreId: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return readerProfile
+      ? UserMapper.toDomainReaderProfile(readerProfile)
+      : null;
+  }
 }

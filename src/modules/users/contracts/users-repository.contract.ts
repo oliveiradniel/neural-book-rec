@@ -10,4 +10,5 @@ export abstract class UsersRepository {
   abstract getWithReadings(id: string): Promise<UserWithReadings | null>;
   abstract getReaders(): Promise<ReaderProfile[]>;
   abstract getAllWithReadings(): Promise<UserWithReadings[]>;
+  abstract getReaderProfile(id: string): Promise<ReaderProfile | null>;
 }
